@@ -10,7 +10,7 @@ router = APIRouter(
     tags=['Appointments']
     )
 
-@router.post('/appointments', status_code=status.HTTP_201_CREATED, response_model=schema.AppointmentResponse)
+@router.post('/appointments/{patient_id}', status_code=status.HTTP_201_CREATED, response_model=schema.AppointmentResponse)
 def create_appointment(payload: schema.AppointmentCreate, patient_id: int, db: Session = Depends(database.get_db), current_user: models.Patient = Depends(oauth2.get_current_user)):
     patient = pat_crud.get_patient_by_id(patient_id, db)
     if not patient:
@@ -95,7 +95,7 @@ def update_appointment(appointment_id: int, payload: schema.AppointmentUpdate, d
     appointment = apt_crud.update_appointment(appointment_id, payload, db)
     return appointment
 
-@router.delete('/appointments/{appointment_id}', status_code=status.HTTP_202_ACCEPTED)
+@router.post('/appointments/{appointment_id}/cancel_appointment', status_code=status.HTTP_202_ACCEPTED)
 def cancel_appointment(appointment_id: int, db: Session = Depends(database.get_db), current_user: models.Patient = Depends(oauth2.get_current_user)):
     appointment = apt_crud.get_appointment_by_id(appointment_id, db)
     if not appointment:

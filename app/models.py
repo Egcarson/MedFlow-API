@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Enum, Date, Text
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Enum, Date, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.sql.expression import text
@@ -74,8 +74,8 @@ class Appointment(Base):
         "doctors.id", ondelete="CASCADE"), nullable=False)
     emr_id = Column(Integer, ForeignKey(
         "emrs.id", ondelete="CASCADE"), nullable=True)
-    appointment_date = Column(TIMESTAMP(timezone=True),
-                              server_default=text('now()'), nullable=False)
+    appointment_date = Column(DateTime(timezone=True), nullable=False,
+                              server_default=text('CURRENT_TIMESTAMP'))
     status = Column(Enum(AppointmentStatus), default=AppointmentStatus.PENDING)
 
     patient = relationship("Patient", back_populates="appointments")

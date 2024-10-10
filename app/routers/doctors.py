@@ -31,7 +31,7 @@ async def get_doctor_by_specialization(specialization: str, db: Session = Depend
     return doctors
 
 
-@router.get('/doctors/{doctor_id}', status_code=201, response_model=schema.Doctor)
+@router.get('/doctors/{doctor_id}', status_code=200, response_model=schema.Doctor)
 async def get_doctor_by_id(doctor_id: str, db: Session = Depends(get_db)):
     doctor = doctor_crud_service.get_doctor_by_id(db, doctor_id=doctor_id)
 
